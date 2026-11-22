@@ -24,7 +24,8 @@
  *   hero     – big image/GIF/video at the top: { src, video, alt, aspectRatio, label, caption }.
  *              `src` is an image or GIF. `video` (optional) is an imported video
  *              file that plays muted on a loop like a GIF; `src` then shows
- *              until it starts. `aspectRatio` (optional, default '2') is the
+ *              until it starts, so make it the video's first frame or the
+ *              switch will flash (ffmpeg -i hero.mp4 -frames:v 1 hero-poster.jpg). `aspectRatio` (optional, default '2') is the
  *              box's shape, e.g. '16 / 9' for a 1280×720 video. `label` is
  *              optional text in its corner, e.g. '[GIF]'. `caption` (optional)
  *              is a line shown centred under it.

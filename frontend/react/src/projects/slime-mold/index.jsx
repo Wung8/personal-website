@@ -7,6 +7,7 @@ import Code from '../../components/CodeBlock.jsx'
 import ImageGallery from '../../components/ImageGallery.jsx'
 import PostClip from '../../components/PostClip.jsx'
 import heroVideo from './hero.mp4'
+import heroPoster from './hero-poster.jpg'
 
 // Clips, rendered from the notebook (hoohacks/slimemold.ipynb) at its 20 fps.
 import moveClip from './clips/algo-1-move.mp4'
@@ -84,11 +85,12 @@ const gallery = [
 export default {
   title: 'Slime Mold Simulation',
   subtitle: 'Highly vectorized implementation of the Slime Mold simulation',
-  tags: ['NumPy', 'Vectorization', 'Cellular Automata', 'PyGame'],
+  tags: ['NumPy', 'Vectorization', 'Cellular Automata', 'OpenCV', 'PyGame'],
   links: [{ label: 'Github', href: 'https://github.com/Wung8/SlimeMoldSimulation' }],
   hero: {
     video: heroVideo,
-    src: '/images/projects/slime-mold.png',
+    // The video's own first frame, so nothing visibly changes when it starts playing.
+    src: heroPoster,
     alt: 'Slime mold simulation: glowing trails branching outward into a network',
     aspectRatio: '16 / 9',
     caption: 'Multi-species slime mold simulation of 20,000 agents running at 14fps.',
@@ -104,6 +106,10 @@ export default {
             thousands of individual cells follow a very simple set of rules to produce complex
             patterns. This project focuses on a basic configurable multi-species implementation
             of the Slime Mold and fully vectorizing it.
+          </p>
+
+          <p>
+            This project was inspired by Sebastian Lague's video on the topic. <a href="https://www.youtube.com/watch?v=X-iSQQgOd1A">Link</a>
           </p>
         </>
       ),
