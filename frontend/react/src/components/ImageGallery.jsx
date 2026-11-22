@@ -9,7 +9,8 @@ import './ArtGallery.css'
  *
  *   pieces – [{ image, width, height, alt, title }]. width/height are the
  *            image's size in pixels (used for the layout before it loads);
- *            title is optional and shows under it when opened full size.
+ *            title is optional and shows under it when opened full size;
+ *            thumb is an optional smaller copy to show in the grid.
  */
 export default function ImageGallery({ pieces }) {
   // Index of the image open in the full-size viewer, or null when it's closed.
@@ -29,11 +30,13 @@ export default function ImageGallery({ pieces }) {
             aria-label={`Open full size: ${piece.title ?? piece.alt}`}
           >
             <img
-              src={piece.image}
+              // A small thumbnail when there is one; the full image opens in the Lightbox.
+              src={piece.thumb ?? piece.image}
               alt={piece.alt}
               width={piece.width}
               height={piece.height}
               loading="lazy"
+              decoding="async"
             />
           </button>
         ))}

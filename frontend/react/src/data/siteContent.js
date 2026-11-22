@@ -73,6 +73,7 @@ export const projects = [
     description: 'RL library implementing PPO and its implementation details from Pytorch.',
     year: 2024,
     image: '/images/projects/reinforcement-learning.png',
+    slug: 'reinforcement-learning',
   },
   {
     title: 'Slime Mold Simulation',
@@ -143,6 +144,9 @@ export const projects = [
  *            the images load, so the page doesn't jump around.
  *   alt    – short description of the piece, for screen readers
  *   title  – optional; shown under the piece when it's opened full size
+ *
+ * After adding or changing a piece, run `python scripts/make_art_thumbnails.py`
+ * to make the small copy the grid shows.
  */
 export const art = {
   heading: 'Art',
