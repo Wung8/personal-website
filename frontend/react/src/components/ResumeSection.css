@@ -1,0 +1,17 @@
+/* Styled like a project card so it fits in with the section above. */
+.resume__link {
+  display: inline-block;
+  padding: 12px 20px;
+  background: var(--card-bg);
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--card-title);
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.resume__link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(60, 70, 110, 0.15);
+}

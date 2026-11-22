@@ -1,0 +1,54 @@
+/*
+ * Justified rows, with CSS only:
+ * each piece's flex-basis and flex-grow are both proportional to its aspect
+ * ratio (--ratio, set in ArtGallery.jsx). Pieces fill a row at roughly
+ * --art-row-height, then grow to fill the leftover space in proportion to
+ * their width, which keeps every piece in a row the same height.
+ */
+.art__grid {
+  --art-row-height: 220px;
+  --art-gap: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* only matters for a row that hits the cap below */
+  gap: var(--art-gap);
+}
+
+.art__item {
+  flex-grow: var(--ratio);
+  flex-basis: calc(var(--ratio) * var(--art-row-height));
+  /* Safety cap: a piece stuck alone on a row (e.g. a tall one on a narrow
+     screen) stops growing at 1.6x the row height instead of filling the width. */
+  max-width: calc(var(--ratio) * var(--art-row-height) * 1.6);
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: var(--placeholder);
+  overflow: hidden;
+  cursor: zoom-in;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.art__item:hover,
+.art__item:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(60, 70, 110, 0.2);
+}
+
+.art__item:focus-visible {
+  outline: 3px solid var(--link);
+  outline-offset: 2px;
+}
+
+.art__item img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 700px) {
+  .art__grid {
+    --art-row-height: 140px;
+    --art-gap: 8px;
+  }
+}

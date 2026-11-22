@@ -1,0 +1,71 @@
+.project-card {
+  position: relative; /* the year is positioned against the card */
+  display: flex;
+  flex-direction: column;
+  padding: 9px 9px 4px;
+  background: var(--card-bg);
+  border-radius: 12px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.project-card--link {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.project-card--link:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(60, 70, 110, 0.15);
+}
+
+/* Fixed aspect ratio keeps every card the same height regardless of image size. */
+.project-card__media {
+  aspect-ratio: 1.95;
+  border: 2px solid var(--text-strong);
+  background: var(--placeholder);
+  overflow: hidden;
+}
+
+.project-card__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-card__info {
+  padding: 12px 12px 10px;
+}
+
+.project-card__title {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--card-title);
+}
+
+.project-card__description {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--card-title);
+}
+
+/*
+ * The year sits in the bottom-right corner on top of the text, so the
+ * description can use the full width of the card. Its background matches the
+ * card so any text underneath is hidden rather than overlapping it.
+ */
+.project-card__year {
+  position: absolute;
+  right: 21px; /* card padding + info padding, to line up with the text */
+  bottom: 14px;
+  padding-left: 6px;
+  background: var(--card-bg);
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--card-year);
+}

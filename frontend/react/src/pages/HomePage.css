@@ -1,0 +1,62 @@
+/* Sidebar on the left, main column on the right; stacks on narrow screens. */
+.home {
+  max-width: calc(var(--content-width) + 2 * var(--page-gutter));
+  margin: 0 auto;
+  padding: 0 var(--page-gutter);
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  gap: var(--column-gap);
+  align-items: start;
+}
+
+/* Space above and below the main column. It lives on this column, not on
+   .home, so the sticky sidebar below never moves: it starts at the top and stays
+   there to the bottom. The sidebar's own top spacing is the photo's margin-top
+   in ProfileSidebar.css. */
+.home__main {
+  padding: 48px 0 80px;
+}
+
+/* Space between sections (Projects, Resume, ...). */
+.home__main > section + section {
+  margin-top: 40px;
+}
+
+/*
+ * The sidebar stays in view while the projects scroll past. If the window is
+ * too short to show all of it, it can be scrolled on its own (mouse wheel or
+ * touch) instead of being cut off. Its scrollbar is hidden because the bar's
+ * width would squeeze the text and make the sidebar taller than it needs to be.
+ */
+.home .profile {
+  position: sticky;
+  top: 0;
+  max-height: 100cqh;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+/* Older Chrome and Safari ignore `scrollbar-width`. */
+.home .profile::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .home {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .home__main {
+    padding-top: 0;
+  }
+
+  /* Stacked layout: the sidebar scrolls with everything else. */
+  .home .profile {
+    position: static;
+    max-height: none;
+    overflow: visible;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+}

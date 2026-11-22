@@ -1,0 +1,131 @@
+/*
+ * Site-wide colors, sizes, and base styles.
+ * Change a color here and it updates everywhere it is used.
+ */
+:root {
+  /* Page */
+  --page-bg-top: #6ba1c7;
+  --page-bg-bottom: #d2bfc2;
+  --text: #24273a;
+  --text-strong: #14161f;
+
+  /* Nav and photo frame */
+  --nav-bg: #649fc7;
+  --nav-border: rgba(255, 255, 255, 0.4);
+  --frame: #c6dcfa;
+
+  /* Links */
+  --link: #243d74;
+  --link-hover: #172a55;
+
+  /* Project cards */
+  --card-bg: #fbfcfe;
+  --card-title: #4a5070;
+  --card-year: #9aa1bf;
+  --placeholder: #e3e7f2;
+
+  /* Project write-up pages */
+  --post-link: #dfe6f3;
+  --post-link-hover: #ffffff;
+  --post-rule: rgba(36, 39, 58, 0.2);
+  --tag-bg: rgba(255, 255, 255, 0.4);
+  --tag-border: #8fa5c8;
+  --tag-text: #2e3a5c;
+  --toc-bg: rgba(255, 255, 255, 0.35);
+  --toc-heading: #627891;
+  --toc-link: #4d6890;
+  --toc-link-active: #1f4a75;
+  --toc-bar: #4a82b4;
+  --code-bg: #1f2233;
+  --code-text: #e4e7f2;
+  --code-inline-bg: rgba(255, 255, 255, 0.45);
+
+  /* Layout */
+  --content-width: 1110px;
+  --sidebar-width: 288px;
+  --column-gap: 80px;
+  --page-gutter: 24px;
+  /* The nav adds this much on its right so it stays lined up with the content
+     beside the scrollbar. */
+  --scrollbar-width: 16px;
+
+  font-family: 'Nunito', system-ui, 'Segoe UI', Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(180deg, var(--page-bg-top), var(--page-bg-bottom));
+}
+
+/* The page itself never scrolls: the app fills the window, with the nav on top
+   and a scrolling area below it (.page-scroll in HomePage.css). */
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Fills the window below the nav and scrolls on its own (see #root above).
+   Every page (home, project write-ups) sits inside it; see App.jsx. */
+.page-scroll {
+  flex: 1;
+  overflow-y: auto;
+  /* Lets children size themselves to this area's height with the `cqh` unit. */
+  container-type: size;
+}
+
+img {
+  max-width: 100%;
+}
+
+/* Heading at the top of each section in the main column (Projects, Resume, ...). */
+.section-heading {
+  margin: 24px 0 22px;
+  font-size: 2rem;
+  line-height: 1.2;
+  font-weight: 500;
+  color: var(--text-strong);
+}
+
+/* Scrollbar: white handle on a transparent track. */
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: var(--scrollbar-width);
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* The transparent border plus padding-box clip leaves a little space around the handle. */
+::-webkit-scrollbar-thumb {
+  background: #ffffff padding-box;
+  border: 3px solid transparent;
+  border-radius: 8px;
+}
+
+/* Firefox (it doesn't support the rules above). Chrome would let this override
+   them, so it's limited to Firefox only. */
+@supports (-moz-appearance: none) {
+  :root {
+    scrollbar-color: #ffffff transparent;
+  }
+}
+
+@media (max-width: 600px) {
+  :root {
+    --page-gutter: 16px;
+    /* Phones scroll by touch, so no scrollbar (and no space saved for one). */
+    --scrollbar-width: 0px;
+  }
+}

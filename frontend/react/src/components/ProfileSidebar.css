@@ -1,0 +1,75 @@
+/*
+ * The two big gaps (above the photo, and photo → "About Me") shrink in short
+ * windows so the whole sidebar still fits on screen.
+ *
+ * --profile-full-height is how tall the sidebar is with the full gaps. When the
+ * scroll area (100cqh) is shorter than that, the gaps give up exactly the
+ * missing space, two-thirds from the top gap and one-third from the other,
+ * until they reach their minimums. If you change the bio, photo size, or gaps,
+ * update this number: in the browser console,
+ * document.querySelector('.profile').scrollHeight in a tall window gives it.
+ */
+.profile {
+  --profile-full-height: 649px;
+  --profile-shortfall: calc(var(--profile-full-height) - 100cqh);
+}
+
+/* The frame is a wrapper so it keeps its shape even before a photo is added. */
+.profile__photo {
+  /* min 24px, full 52px */
+  margin-top: clamp(24px, calc(52px - var(--profile-shortfall) * 2 / 3), 52px);
+  aspect-ratio: 1;
+  border: 7px solid var(--frame);
+  border-radius: 16px;
+  background: var(--placeholder);
+  overflow: hidden;
+}
+
+.profile__photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.profile__heading {
+  /* top: min 14px, full 28px */
+  margin: clamp(14px, calc(28px - var(--profile-shortfall) / 3), 28px) 0 8px;
+  font-size: 1.85rem;
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--text-strong);
+}
+
+.profile__bio {
+  color: var(--text-strong);
+}
+
+.profile__bio p {
+  margin: 0 0 10px;
+  line-height: 1.4;
+}
+
+.profile__contacts {
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+  line-height: 1.25;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.profile__contact-label {
+  color: var(--link);
+}
+
+.profile__contacts a {
+  color: var(--link);
+  text-underline-offset: 2px;
+}
+
+.profile__contacts a:hover {
+  color: var(--link-hover);
+}
