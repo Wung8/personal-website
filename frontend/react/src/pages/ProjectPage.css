@@ -290,7 +290,8 @@
 }
 
 .post-group > .post-clips,
-.post-group > .post-clip {
+.post-group > .post-clip,
+.post-group > .art__grid {
   margin-bottom: 12px;
 }
 

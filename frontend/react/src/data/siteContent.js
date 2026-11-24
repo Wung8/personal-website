@@ -94,17 +94,17 @@ export const projects = [
     href: 'https://github.com/Wung8/RainforestPomodoro',
   },
   {
-    title: 'AI Playground',
-    description: 'Platform for hosting bot competitions and applied learning.',
-    year: 2026,
-    image: '/images/projects/aiplayground.png',
-  },
-  {
     title: 'RaidersAI',
     slug: 'raiders',
     description: 'Browser-based game for experimenting with algorithmic decision-making AI.',
     year: 2026,
     image: '/images/projects/raidersai.png',
+  },
+  {
+    title: 'AI Playground',
+    description: 'Platform for hosting bot competitions and applied learning.',
+    year: 2026,
+    image: '/images/projects/aiplayground.png',
   },
   {
     title: 'DreamerV3',

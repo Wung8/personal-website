@@ -59,6 +59,33 @@ import rotation1 from './images/rotation-1.png'
 import rotation2 from './images/rotation-2.png'
 import botWipe from './images/bot-wipe.png'
 import stoneWalls from './images/stone-walls-40v40.png'
+import fogOfWar from './clips/26-fog-of-war.mp4'
+import fogOfWarImage from './images/fog-of-war.jpg'
+
+// Spring 2026
+import incident1 from './clips/30-incident-1.mp4'
+import incident2 from './clips/31-incident-2.mp4'
+import incident3 from './clips/32-incident-3.mp4'
+import incident4 from './clips/33-incident-4.mp4'
+import incident5 from './images/incident-5.png'
+import hudDay from './images/hud-day.png'
+import clientRegistering from './clips/34-client-registering.mp4'
+import finishedRendering from './images/finished-rendering.png'
+
+// Fall 2026
+import earlyWraith from './clips/40-early-wraith.mp4'
+import newWeapons from './clips/41-new-weapons.mp4'
+import visualOverhaul from './clips/42-visual-overhaul.mp4'
+import moba1 from './images/moba-1.png'
+import moba2 from './images/moba-2.png'
+import moba3 from './images/moba-3.png'
+import cursedConcept from './images/cursed-concept.png'
+import quickMatch from './clips/43-quick-match.mp4'
+import shieldSword from './clips/44-shield-sword.mp4'
+import lateGame from './clips/45-late-game.mp4'
+
+// Additional work
+import muramasa from './clips/50-muramasa.mp4'
 
 /** A gameplay clip: full width, 16:9, with controls so it can be unmuted or scrubbed. */
 function Clip({ src, alt, caption, aspectRatio = '16 / 9' }) {
@@ -78,7 +105,8 @@ function Group({ caption, children }) {
 export default {
   title: 'RaidersAI',
   subtitle: 'Browser-based game for experimenting with algorithmic decision-making AI',
-  tags: ['Python', 'Javascript', 'AWS', 'PyGame', 'Port Forwarding', 'Game Design'],
+  tags: ['Python', 'Javascript', 'AWS', 'Flask', 'Websockets', 'PyGame', 'Game Design'],
+  links: [{ label: 'Github', href: 'https://github.com/Wung8/RaidersAI' }],
   hero: {
     src: '/images/projects/raidersai.png',
     alt: 'RaidersAI gameplay',
@@ -91,11 +119,13 @@ export default {
       body: (
         <>
           <p>
+            RaidersAI is no longer being hosted. If you'd like to host it yourself, the code is open-source on GitHub. <a target="_blank" rel="noreferrer" href="https://github.com/Wung8/RaidersAI">Link</a>
+          </p>
+          <p>
             RaidersAI was a browser-based game, featuring loadout customization, base building, and
             pvp combat. It was intended to be a testing ground for creating algorithmic AI that could
             handle micro and macro level decision making, team coordination, and prioritizing
-            objectives. The website is now down since my friends and I have moved on from it, and it
-            costs about $15 a month to host.
+            objectives. 
           </p>
           <p>
             This will be a gallery documenting the development of this project and the incidents that
@@ -301,6 +331,16 @@ export default {
               ]}
             />
           </Group>
+          <Group caption="12/20/25 One of the strangest bugs I've had while implementing fog of war.">
+            <div className="post-clips">
+              <PostClip src={fogOfWar} alt="A dark green map with smeared trails behind a player" aspectRatio="1152 / 720" controls />
+              <ImageGallery
+                pieces={[
+                  { image: fogOfWarImage, width: 1280, height: 800, alt: 'The fog of war bug smearing the map around a player' },
+                ]}
+              />
+            </div>
+          </Group>
 
           <p>
             It was about this time when people got comfortable with creating bots for the game and
@@ -339,9 +379,233 @@ export default {
 
           <p>
             At this point, I decided to take a 2 week break from the project. When I came back, I found out that the tunneling service
-            feature I relied on had been turned into a premium feature. After another 4 months, I decided to come back and try putting
+            feature I relied on had been turned into a premium feature, which made me take another break. After 4 months, I decided to come back and try putting
             the game on the web.
           </p>
+        </>
+      ),
+    },
+    {
+      id: 'spring-2026',
+      title: 'Spring 2026',
+      body: (
+        <>
+          <p>
+            During my break from Raiders, I was working on another project called AI Playground. While
+            working on that project I had learned web development, including Flask, JavaScript, and
+            websockets. I realized that was basically all I needed to put Raiders on the web.
+          </p>
+
+          <Group caption="4/29/26 Incidents that happened while moving rendering to the web browser.">
+            <div className="post-clips">
+              <PostClip src={incident1} alt="A rendering glitch in the browser version" aspectRatio="1136 / 630" controls />
+              <PostClip src={incident2} alt="A player with a stretched sword sprite" aspectRatio="916 / 612" controls />
+              <PostClip src={incident3} alt="A player whose sprite swaps to a turret and a stone wall" aspectRatio="430 / 304" controls />
+              <PostClip src={incident4} alt="A player wandering through misplaced trees and rocks" aspectRatio="960 / 636" controls />
+            </div>
+            <ImageGallery
+              pieces={[
+                { image: incident5, width: 957, height: 938, alt: 'The whole map drawn tiny in one corner of the screen' },
+              ]}
+            />
+          </Group>
+          <Group caption="4/30/26 Was able to render the HUD within a single day.">
+            <ImageGallery
+              pieces={[
+                { image: hudDay, width: 1918, height: 983, alt: 'The browser version with a weapon tooltip, resources, hotbar and minimap' },
+              ]}
+            />
+          </Group>
+          <Clip
+            src={clientRegistering}
+            alt="A storm ring glitching across the screen in the browser version"
+            caption="5/1/26 Issues registering clients to the server."
+            aspectRatio="1920 / 980"
+          />
+          <Group caption="5/2/26 Finished moving the rendering scripts and improved UI in four days.">
+            <ImageGallery
+              pieces={[
+                { image: finishedRendering, width: 1912, height: 975, alt: 'Two players in the finished browser version with the new HUD' },
+              ]}
+            />
+          </Group>
+
+          <p>
+            At this point the spring semester was wrapping up, and I moved away from the project to
+            focus on finals.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: 'fall-2026',
+      title: 'Fall 2026',
+      body: (
+        <>
+          <p>
+            One of the biggest issues I had while developing the game was that many mechanics couldn't
+            be added to the game without making it impossible to develop AI that could utilize it.
+            However, the people that had been working on bots had moved on from the project, so I was
+            free to experiment with the various mechanics I could never implement.
+          </p>
+          <p>The main three changes I wanted to add were:</p>
+          <ul>
+            <li>Customizable loadouts, which doubled the number of weapons, structures, and items.</li>
+            <li>
+              Updating the storm, making it a high risk high reward area with dangerous monsters but
+              double the resources.
+            </li>
+            <li>
+              New death mechanic, where killed players become wraiths with an entirely new set of
+              abilities. They can kill living players to get back into the game.
+            </li>
+          </ul>
+          <p>
+            It was this time when I began integrating AI-generated code into the project, which I
+            learned several things from.
+          </p>
+
+          <Clip
+            src={earlyWraith}
+            alt="A wraith adding storm areas, turning intangible and possessing a player"
+            caption="9/26/26 Early iteration of the wraith with core mechanics: adding storm areas, becoming intangible, and possessing players on kill."
+            aspectRatio="984 / 500"
+          />
+          <Clip
+            src={newWeapons}
+            alt="A player trying out the katana, shield and throwing knives"
+            caption="9/27/26 Added several new weapons, including the katana, shield, and throwing knives. The katana and throwing knives are still my favorites."
+            aspectRatio="1280 / 652"
+          />
+          <Group caption="9/29/26 Visual overhaul, with the goal of moving away from an .io style game and towards a MOBA style.">
+            <ImageGallery
+              pieces={[
+                { image: moba1, width: 770, height: 876, alt: 'The overhauled art style, close up' },
+                { image: moba2, width: 780, height: 832, alt: 'More of the overhauled art style' },
+                { image: moba3, width: 1268, height: 971, alt: 'A wider view of the overhauled map' },
+              ]}
+            />
+            <Clip src={visualOverhaul} alt="Gameplay with the MOBA-style visuals" aspectRatio="1280 / 656" />
+          </Group>
+          <Group caption="9/30/26 Concept art for the new cursed resources found in the storm.">
+            <ImageGallery
+              pieces={[
+                { image: cursedConcept, width: 1480, height: 787, alt: 'Concept art for the cursed resources found in the storm' },
+              ]}
+            />
+          </Group>
+          <Clip
+            src={quickMatch}
+            alt="Several copies of the same player spawning into a match"
+            caption="10/1/26 Clicking on quick match multiple times while the game was loaded resulted in multiple player objects being created for one client."
+            aspectRatio="852 / 480"
+          />
+
+          <p>
+            Around here was when I started using AI to generate multiple features with very little code
+            review by me. This included finishing the wraith mechanics and developing a new team of bots.
+          </p>
+
+          <div className="post-clips">
+            <PostClip
+              src={shieldSword}
+              alt="A bot alternating between shield and sword in a fight"
+              caption="10/3/26 Shield swording technique developed by Claude."
+              aspectRatio="1258 / 1080"
+              controls
+            />
+            <PostClip
+              src={lateGame}
+              alt="A late-game fight between two teams of Claude bots"
+              caption="10/3/26 Recording of late-game gameplay between Claude bots."
+              aspectRatio="1280 / 692"
+              controls
+            />
+          </div>
+
+          <p>
+            Despite their perfect mechanics, the AI-generated bots were repeatedly making the same
+            strategic errors, such as not properly creating bastions, not utilizing turrets in a siege,
+            and overall being inefficient with resources. At this point the fall semester was starting
+            to pick up, and so I decided to move on from this project.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: 'conclusion',
+      title: 'Conclusion',
+      body: (
+        <>
+          <p>
+            This project had a lot of misguided directions. From trying to make my own server-client
+            connection to making this game in Python in the first place, I ran into a lot of challenges
+            that I wouldn't have otherwise. However, this did give me a much deeper appreciation of the
+            software we regularly use.
+          </p>
+          <p>
+            I think the reason why this project interested me so much in the earlier stages was that
+            even though development was slow, every feature was basically the way I wanted it, and it
+            was exciting to think about how the project would look like when it was done. This was
+            likely because of how slow development was, as I was able to adjust every feature as I was
+            working on it.
+          </p>
+          <p>
+            As I utilized more of the tools that were available to me, like shifting from Pygame and
+            custom client registering to browser rendering and Flask, I was able to create features much
+            faster than before. Reimplementing a game that took 2 months of work was done in 4 days.
+          </p>
+          <p>
+            Once I saw how much faster development could be, utilizing AI seemed like the next logical
+            step. However, this resulted in me giving far less attention to individual features. While
+            I was able to create the wraith and a much better bot team in a few days, I was overall less
+            satisfied with the results and lost interest.
+          </p>
+          <p>
+            In the future, I will probably still utilize AI for coding, especially for things that have
+            been done a lot before. But for my ideas and more experimental features, I want to take the
+            time to make sure I get it the way I want.
+          </p>
+          <p>
+            Of course, this would be much easier to do if something like this was my job, and I didn't
+            have to think about college all the time.
+          </p>
+        </>
+      ),
+    },
+    {
+      id: 'additional-work',
+      title: 'Additional Work',
+      body: (
+        <>
+          <h3>Structures and Bosses</h3>
+          <p>
+            One of the things I really wanted to add were neutral structures and bosses. This included a
+            dragon in a boss pit that would grant strength and extra max health on kill, a stone talus
+            boss that could be defeated and turned into a controllable juggernaut, and a workshop with
+            goblins that had a ballista which could be used in sieges. I was thinking there could be a
+            boss structure in each corner of the map, and teams would have to decide on which bosses they
+            wanted to take down and which ones they wanted to deny from the enemy team.
+          </p>
+
+          <h3>Wraith Mechanics</h3>
+          <p>
+            I'm overall not very happy with how the wraiths turned out and that they could have been a
+            lot cooler, but the biggest disappointment was the root ability. The idea was that wraiths
+            could grow an army of storm monsters, which they could march outside of the storm and attack
+            living players. I didn't spend enough time designing the wraith and went for the easiest
+            option, the current root ability, which turned out to be a very frustrating mechanic for
+            everyone.
+          </p>
+
+          <h3>Skins, Accounts, and Game Lobbies</h3>
+          <p>Need I say more?</p>
+          <PostClip
+            src={muramasa}
+            alt="A player swinging a glowing Muramasa sword skin"
+            caption="12/19/25 Muramasa sword skin for $.99 anyone?"
+            controls
+          />
         </>
       ),
     },
