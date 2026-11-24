@@ -182,7 +182,7 @@ export default {
       body: (
         <>
           <p>
-            Currently, every updat is being done in Python, with a time complexity 
+            Currently, every update is being done in Python, with a time complexity 
             of <code>O(N) + O(M^2)</code>, with <code>N</code> being the number of agents 
             and <code>M</code> being the size of the grid. 
             Our tiny simulation with 1,500 agents on a 250x250 grid is already under 15 fps.
