@@ -1,0 +1,136 @@
+/* Training-curve charts (TrainingCurves.jsx). The site is light-only, so these
+   are the light steps of the chart palette, validated on --curves-surface. */
+.curves {
+  --curves-surface: #fbfcfe;
+  --curves-ink: #24273a;
+  --curves-muted: #5d6275;
+  --curves-grid: #e4e7ef;
+  --series-1: #2a78d6; /* blue */
+  --series-2: #eb6834; /* orange */
+  --series-3: #1baf7a; /* aqua */
+  --series-4: #eda100; /* yellow */
+  margin: 1.5rem 0;
+  container-type: inline-size; /* the chart grid switches on this width */
+}
+
+.curves__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+  margin: 0 0 12px;
+  padding: 0;
+  list-style: none;
+  font-size: 0.9rem;
+  color: var(--text-strong);
+}
+
+.curves__legend li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.curves__swatch {
+  display: inline-block;
+  width: 14px;
+  height: 3px;
+  border-radius: 2px;
+  flex: none;
+}
+
+.curves__swatch--band {
+  height: 10px;
+  background: var(--curves-muted);
+  opacity: 0.25;
+}
+
+.curves__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+/* Two per row once each chart can be 300px wide. An odd chart out sits
+   alone in the last row, centered at the same width as the others. */
+@container (min-width: 616px) {
+  .curves__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .curves__chart:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc(50% - 8px); /* half the row, minus half the gap */
+    box-sizing: border-box;
+  }
+}
+
+.curves__chart {
+  background: var(--curves-surface);
+  border-radius: 10px;
+  padding: 12px 12px 8px;
+  color: var(--curves-ink);
+}
+
+.curves__chart h4 {
+  margin: 0 0 4px 4px;
+  font-size: 0.95rem;
+  color: var(--curves-ink);
+}
+
+.curves__chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.curves__grid-line {
+  stroke: var(--curves-grid);
+  stroke-width: 1;
+}
+
+.curves__tick {
+  fill: var(--curves-muted);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.curves__axis-label {
+  fill: var(--curves-muted);
+  font-size: 11px;
+}
+
+.curves__band {
+  fill: var(--c);
+  opacity: 0.16;
+}
+
+.curves__line {
+  fill: none;
+  stroke: var(--c);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.curves__note {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  font-style: italic;
+  text-align: center;
+}
+
+/* Direct labels at the end of each line: ink text, with a short leader in the
+   series color carrying the identity. */
+.curves__leader {
+  fill: none;
+  stroke: var(--c);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.curves__end-label {
+  fill: var(--curves-ink);
+  font-size: 11px;
+}

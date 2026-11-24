@@ -5,9 +5,9 @@ import { useEffect, useState } from 'react'
  * library. Pages are picked by the URL path in App.jsx.
  *
  * Any normal <a href="/some/path"> on the site is handled here: clicking it
- * swaps the page without reloading. Links that open in a new tab, go to
- * another site, or only change the #hash on the current page are left to the
- * browser as usual.
+ * swaps the page without reloading. Links to another site always open in a
+ * new tab. Links that already open in a new tab or only change the #hash on
+ * the current page are left to the browser as usual.
  */
 
 const listeners = new Set()
@@ -50,7 +50,15 @@ export function useLinkInterception() {
       if (!link || link.target || link.hasAttribute('download')) return
 
       const url = new URL(link.href)
-      if (url.origin !== window.location.origin) return
+      if (url.origin !== window.location.origin) {
+        // Links to other sites open in a new tab so visitors don't leave this
+        // one, even if the link forgot target="_blank". (mailto: etc. are left alone.)
+        if (url.protocol === 'http:' || url.protocol === 'https:') {
+          event.preventDefault()
+          window.open(url.href, '_blank', 'noreferrer')
+        }
+        return
+      }
       // Files like the resume PDF are real files, not pages.
       if (/\.[a-z0-9]+$/i.test(url.pathname)) return
       // Same page, different #section: let the browser scroll there.

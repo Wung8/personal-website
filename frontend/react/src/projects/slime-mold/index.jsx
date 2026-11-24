@@ -109,7 +109,7 @@ export default {
           </p>
 
           <p>
-            This project was inspired by Sebastian Lague's video on the topic. <a href="https://www.youtube.com/watch?v=X-iSQQgOd1A">Link</a>
+            This project was inspired by Sebastian Lague's video on the topic. <a target="_blank" rel="noreferrer" href="https://www.youtube.com/watch?v=X-iSQQgOd1A">Link</a>
           </p>
         </>
       ),

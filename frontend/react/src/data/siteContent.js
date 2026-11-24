@@ -65,7 +65,11 @@ export const resume = {
  *   href        – where the card links to (optional; opens in a new tab)
  *   slug        – opens the project's write-up at /projects/<slug> instead (optional).
  *                 The write-up lives in src/projects/<slug>/ (see src/projects/index.js).
- * A card with neither href nor slug is not clickable.
+ *   wip         – true shows a "WIP" pill even on a card that has a link (optional)
+ *
+ * Pills in the card's top-right corner are added automatically: "Blog" for a
+ * slug, the GitHub logo for an href on github.com, and "WIP" for a card with
+ * neither href nor slug (it isn't clickable yet) or with wip: true.
  */
 export const projects = [
   {
@@ -87,18 +91,7 @@ export const projects = [
     description: 'Pomodoro app with playlist features and procedurally generated trees.',
     year: 2025,
     image: '/images/projects/rainforest-pomodoro.png',
-  },
-  {
-    title: 'DreamerV3',
-    description: 'Reimplementation of DreamerV3, a state-of-the-art model-based RL algorithm.',
-    year: 2024,
-    image: '/images/projects/dreamer-v3.png',
-  },
-  {
-    title: 'RaidersAI',
-    description: 'Browser-based game for experimenting with algorithmic decision-making AI.',
-    year: 2026,
-    image: '/images/projects/raidersai.png',
+    href: 'https://github.com/Wung8/RainforestPomodoro',
   },
   {
     title: 'AI Playground',
@@ -107,10 +100,23 @@ export const projects = [
     image: '/images/projects/aiplayground.png',
   },
   {
+    title: 'RaidersAI',
+    description: 'Browser-based game for experimenting with algorithmic decision-making AI.',
+    year: 2026,
+    image: '/images/projects/raidersai.png',
+  },
+  {
+    title: 'DreamerV3',
+    description: 'Reimplementation of DreamerV3, a state-of-the-art model-based RL algorithm.',
+    year: 2024,
+    image: '/images/projects/dreamer-v3.png',
+  },
+  {
     title: 'AlphaZero',
-    description: 'A reimplementation of AlphaZero.',
+    description: 'A reimplementation of AlphaZero for Reversi and Connect Four.',
     year: 2023,
     image: '/images/projects/alphazero.png',
+    href: 'https://github.com/Wung8/Reversi-and-Connect4-AI/tree/main',
   },
   {
     title: 'The Marshallow Test',
@@ -121,14 +127,15 @@ export const projects = [
   {
     title: 'The Evolution of Trust',
     description: 'Visualization of the evolution of trust and multiple stable equilibria.',
-    year: 2024,
+    year: 2023,
     image: '/images/projects/evolution-of-trust.png',
   },
   {
     title: 'More Keyboard Shortcuts',
     description: 'Desktop app and code editor for creating custom keyboard shortcuts.',
     year: 2022,
-    image: '/images/projects/keyboard-shortcuts.png',
+    image: '/images/projects/more-keyboard-shortcuts.png',
+    href: 'https://github.com/Wung8/More-Keyboard-Shortcuts',
   },
 ]
 

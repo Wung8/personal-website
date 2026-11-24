@@ -4,6 +4,31 @@
  */
 
 import Code from '../../components/CodeBlock.jsx'
+import PostClip from '../../components/PostClip.jsx'
+import TrainingCurves from '../../components/TrainingCurves.jsx'
+
+// Episode returns from training this library and SB3 PPO side by side (made by
+// rl-training-package's run_all.py, binned by aggregate.py): per chart and library,
+// [frames, median, worst seed, best seed] over 100 stretches of training.
+import trainingCurves from './training-curves.json'
+// The same, for the PPO ablation on Flappy Bird (1 env with 5-step returns,
+// 1 env with GAE, then 8 envs with GAE). Binned with --per-env, so x is each
+// environment's own step count: the 8-env runs took 8 frames per step.
+import ablationCurves from './ablation-curves.json'
+
+// 20 s gameplay clips of agents trained with this library.
+import cartpoleClip from './clips/cartpole.mp4'
+import lunarClip from './clips/lunar.mp4'
+import carClip from './clips/car.mp4' // dashboard bar cropped off (its score readout overflows)
+import flappyClip from './clips/flappy.mp4'
+import platformerClip from './clips/platformer.mp4' // 40 s of play at 2x speed
+import soccerClip from './clips/soccer.mp4'
+
+// The two pretrained IPPO agents (trained_networks/left_slime_actor.pth and
+// right_slime_actor.pth) playing RL/environments/slime_volleyball.py: 50 s of play
+// sped up 2.5x into a 20 s clip at 45 fps, with two points scored.
+import heroVideo from './hero.mp4'
+import heroPoster from './hero-poster.jpg'
 
 // Code, copied straight out of the library (github.com/Wung8/Reinforcement-Learning).
 // `?raw` imports the file's text, so editing a .py file here updates the page.
@@ -18,9 +43,12 @@ export default {
   tags: ['PyTorch', 'NumPy', 'PPO', 'LSTM', 'Multiprocessing', 'Gymnasium'],
   links: [{ label: 'Github', href: 'https://github.com/Wung8/Reinforcement-Learning' }],
   hero: {
-    src: '/images/projects/reinforcement-learning.png',
-    alt: 'Two slimes and a ball in the Slime Volleyball environment',
-    aspectRatio: '657 / 322',
+    video: heroVideo,
+    // The video's own first frame, so nothing visibly changes when it starts playing.
+    src: heroPoster,
+    alt: 'Two slimes, one orange and one blue, rallying a ball back and forth over a net',
+    aspectRatio: '2',
+    caption: 'Two agents trained with IPPO playing Slime Volleyball against each other.',
   },
   sections: [
     {
@@ -29,15 +57,14 @@ export default {
       body: (
         <>
           <p>
-            Reinforcement learning is a subfield (sort of) of machine learning where models learn
-            from experience instead of human-labeled data. An agent takes actions in an
-            environment, gets rewards, and slowly learns which actions lead to more reward.
+            Reinforcement learning (RL) is a branch of machine learning where an agent learns to make
+            decisions from its own experience rather than human-labeled data. Unlike supervised learning,
+            where the model is told the correct output for a given input, reinforcement learning
+            requires the agent actively try different actions to learn what maximizes its long-term reward.
           </p>
           <p>
-            This library implements PPO (Proximal Policy Optimization), a recurrent LSTM version of
-            PPO, IPPO for multi-agent games, and DAgger, all from PyTorch and NumPy. Most of the
-            design is based on the Stable Baselines 3 library, and the goal was to understand every
-            implementation detail by building it myself rather than calling it from a library.
+            This library implements PPO (Proximal Policy Optimization) and its variants, rollout buffers, and vectorized environments from PyTorch and NumPy. Most of the
+            design is based on the Stable Baselines 3 library. <a target="_blank" rel="noreferrer" href="https://github.com/dlr-rm/stable-baselines3">Link</a>
           </p>
         </>
       ),
@@ -48,22 +75,35 @@ export default {
       body: (
         <>
           <p>
-            PPO is a policy gradient method. The agent has two networks: an actor, which outputs a
-            probability for each action, and a critic, which estimates how much reward the agent
-            will get from the current state.
+            This section assumes some familiarity with reinforcement learning. If you are interested,
+            check out these resources that helped me when I was learning.
+          </p>
+          <ul>
+            <li><a target="_blank" rel="noreferrer" href="https://huggingface.co/learn/deep-rl-course/en/unit1/introduction">Introduction to Reinforcement Learning</a></li>
+            <li><a target="_blank" rel="noreferrer" href="https://medium.com/data-science/an-intuitive-explanation-of-policy-gradient-part-1-reinforce-aa4392cbfd3c">Policy Gradient</a></li>
+            <li><a target="_blank" rel="noreferrer" href="https://huggingface.co/learn/deep-rl-course/en/unit6/introduction">Actor Critic</a></li>
+            <li><a target="_blank" rel="noreferrer" href="https://huggingface.co/blog/deep-rl-ppo">PPO</a></li>
+          </ul>
+          <p>
+            PPO is a policy-gradient method built on top of REINFORCE, and uses two networks: 
+            an actor, which outputs a probability for each action,
+            and a critic, which estimates how much reward the agent will get from the current state.
+            By using the critic as a baseline, PPO reduces the high variance of REINFORCE, 
+            leading to more stable policy updates.
           </p>
           <p>
-            Training alternates between two phases. First the agent plays the game for a fixed
-            number of steps and stores everything in a rollout buffer. Then it trains on that
-            buffer for several epochs of minibatches, and throws the data away.
+            What distinguishes PPO from other actor-critic methods is its efficient use of data. Instead of throwing away
+            each batch after one update, it can train on the same batch for several epochs. This is normally unsafe, since each
+            updates moves the policy further from the one that collected the data, leading to inaccurate updates.
           </p>
           <p>
-            The problem with reusing data for several epochs is that the policy can drift far from
-            the one that collected it, and big policy updates tend to wreck training. PPO fixes this
-            by clipping the ratio between the new and old action probabilities, so a single update
-            can't push the policy too far.
+            PPO prevents this by clipping the objective. Once the ratio between the new and old probability of an action moves 
+            far away from 1, any samples that would result in further deviation stops contributing any gradient, so the policy 
+            can't drift too far even with several updates.
           </p>
-          <Code>{ppoLoss}</Code>
+          <p>
+            TRPO enforces a similar limit but requires a more computationally expensive optimization.
+          </p>
         </>
       ),
     },
@@ -73,148 +113,113 @@ export default {
       body: (
         <>
           <p>
-            PPO on paper is fairly simple, but a lot of what makes it actually work is in the small
-            details. These are the ones I implemented.
+            The original PPO paper and its base implementation leaves out several implementation details,
+            many of which contribute very significantly to its performance. Here I will go over a few
+            details I've found to be important. More details can be found in The 37 Implementation Details of 
+            PPO. <a target="_blank" rel="noreferrer" href="https://iclr-blog-track.github.io/2022/03/25/ppo-implementation-details/">Link</a>
           </p>
+          <TrainingCurves
+            series={[
+              { key: 'nstep', label: 'Base: 5-step returns', slot: 4, endLabel: '5-step' },
+              { key: 'gae1', label: 'GAE Lambda', slot: 3, endLabel: 'GAE' },
+              { key: 'mine', label: 'Vec env + GAE', slot: 1, endLabel: '8 envs' },
+            ]}
+            charts={ablationCurves.charts.map((c) => ({ ...c, yLabel: 'Episode return', xLabel: 'Steps per environment' }))}
+            note="Median episode return on Flappy Bird across 3 seeds, with the shaded band spanning the worst and best seed. +1 for getting through a pipe, +0.01 per frame survived, capped at around 300 score per episode."
+          />
 
           <h3>Generalized Advantage Estimation</h3>
           <p>
-            The advantage is how much better an action was than the critic expected. Using only the
-            next reward is low variance but biased, and using the whole rest of the episode is
-            unbiased but noisy. GAE blends between the two with a parameter <code>λ</code>,
-            computed in a single backwards pass over the buffer. When an episode ends, the next
-            state's value is zeroed out so rewards don't leak between episodes.
-          </p>
-          <Code>{gae}</Code>
-
-          <h3>Advantage Normalization</h3>
-          <p>
-            Advantages are normalized to zero mean and unit variance in each minibatch, so the size
-            of the update doesn't depend on the scale of the environment's rewards.
+            The advantage is how much better an action was than the critic expected. 
+            Measuring the quality of an action with only the next reward is low variance but short-sighted.
+            Using the rewards from the entire rest of the episode is unbiased but highly variable.
+            GAE blends between then two with the lambda hyperparameter.
           </p>
 
-          <h3>Separate Actor and Critic</h3>
+          <h3>Vectorized Environments</h3>
           <p>
-            The actor and critic are separate networks with separate optimizers, with the critic
-            using a larger learning rate. Both have their gradients clipped to a max norm of 0.5.
+            Reinforcement learning requires a large and diverse set of experiences to make reliable updates. 
+            Vectorized environments has the agent collect experience from several copies of the environment at once.
+            This makes better use of available compute and makes each batch more diverse, since each copy of the environment
+            follows its own trajectory and the agent isn't learning from one long stretch of closely related steps.
           </p>
 
-          <h3>Orthogonal Initialization</h3>
+          <h3>Hyperparameters</h3>
           <p>
-            Layers are initialized orthogonally, and the last layer of the actor is scaled down by
-            100 so every action starts with roughly equal probability.
+            Generally I used similar hyperparameters as suggested in the 37 Implementation Details blog. 
+            The learning rate of the critic should be around 3x higher than of the policy network, and generally
+            the discount rate and lambda hyperparameters can be kept high across environments and are increased for
+            very long-term focused ones.
           </p>
-          <Code>{initWeights}</Code>
-
-          <h3>Multi-Discrete Actions</h3>
           <p>
-            Some games need more than one action at a time, like moving and jumping at the same
-            time. For these, the actor's output is split into one categorical distribution per
-            action, and their log probabilities and entropies are summed.
-          </p>
-
-          <h3>Networks</h3>
-          <p>
-            The default network is picked from the observation shape: an MLP for vectors, and a CNN
-            for images. Image observations are downscaled to 64×64 and normalized to [0, 1] with a
-            wrapper, and Atari games use frame skipping.
+            I found using a larger batch size and fewer epochs resulted in more stable learning in complex, highly variable environments,
+            especially multi-agent ones.
           </p>
         </>
       ),
     },
     {
-      id: 'vectorized-environments',
-      title: 'Vectorized Environments',
+      id: 'stable-baselines-3-comparison',
+      title: 'Stable Baselines 3 Comparison',
       body: (
         <>
           <p>
-            Most of the training time is spent playing the game, not training the network. To speed
-            this up, the library runs many copies of the environment in parallel, each in its own
-            process. The main process sends every worker an action through a pipe, and every worker
-            steps its environment and sends back the result, resetting itself when its episode
-            ends.
+            I tested my implementation against Stable Baselines 3 (SB3), a trusted reinforcement learning library.
+            I trained PPO using the default hyperparameters of each library on the same Gymnasium environments.
+            My implementation reached SB3's peak performance with comparable learning performance, while having a faster runtime.
           </p>
-          <Code>{envWorker}</Code>
-          <p>
-            The actor then picks actions for all environments in one batched forward pass. With 12
-            environments, the agent collects 12 times as much data per step, and the data is more
-            diverse since every copy is in a different situation.
-          </p>
+          <TrainingCurves
+            series={[
+              { key: 'mine', label: 'This library' },
+              { key: 'sb3', label: 'SB3 PPO' },
+            ]}
+            charts={trainingCurves.charts.map((c) => ({ ...c, yLabel: 'Episode return' }))}
+            note="Median episode return across seeds (3 for CartPole and Lunar Lander, 2 for Car Racing), with the shaded band spanning the worst and best seed."
+          />
         </>
       ),
     },
     {
-      id: 'recurrent-ppo',
-      title: 'Recurrent PPO',
+      id: 'gallery',
+      title: 'Gallery',
       body: (
         <>
-          <p>
-            Standard PPO only sees the current observation, so it fails on games where it needs to
-            remember something, like CartPole with the velocities hidden or a T-maze where the
-            correct turn is shown at the start. Recurrent PPO replaces the networks with LSTMs that
-            carry a hidden state between steps.
-          </p>
-          <p>
-            This complicates training, since minibatches can't be shuffled single steps anymore.
-            Instead the buffer stores the LSTM's hidden states during the rollout and samples
-            overlapping sequences of 16 steps (starting every 8 steps). Each sequence starts from
-            its stored hidden state and is trained with truncated backpropagation through time,
-            resetting the hidden state wherever an episode starts.
-          </p>
-        </>
-      ),
-    },
-    {
-      id: 'multi-agent',
-      title: 'Multi-Agent',
-      body: (
-        <>
-          <p>
-            IPPO (Independent PPO) trains several agents in the same game, each with its own PPO
-            learner and rollout buffer, treating the other agents as part of the environment. I
-            used this to train agents against each other in Slime Volleyball and a 2v2 soccer game.
-            Smaller numbers of epochs worked better here, since every agent is learning against
-            opponents that keep changing.
-          </p>
-          <p>
-            The library also has DAgger, an imitation learning method where the agent learns from an
-            expert's actions on the states it visits itself.
-          </p>
-        </>
-      ),
-    },
-    {
-      id: 'environments',
-      title: 'Environments',
-      body: (
-        <>
-          <p>
-            The library works with Gymnasium environments and with my own environments that follow
-            the same interface. One set of hyperparameters is used for all of them, so it isn't
-            tuned for any one game, but it's good enough to learn each one.
-          </p>
-          <ul>
-            <li>
-              <strong>Gymnasium:</strong> CartPole, Acrobot, LunarLander, CarRacing, Breakout and
-              Space Invaders
-            </li>
-            <li>
-              <strong>Custom:</strong> Flappy Bird (from state and from pixels), Slime Volleyball,
-              Soccer, a Diep.io clone, a platformer, Geometry Dash, a T-maze and a simple memory task
-            </li>
-          </ul>
-        </>
-      ),
-    },
-    {
-      id: 'additional-work',
-      title: 'Additional Work',
-      body: (
-        <>
-          <p>
-            DAgger, PPO fine-tuning, and IPPO with LSTMs aren't working with the current version of
-            the library. I left those to work on DreamerV3, a model-based RL algorithm.
-          </p>
+          <h3>Gymnasium</h3>
+          <div className="post-clips">
+            <PostClip
+              src={cartpoleClip}
+              alt="A cart sliding left and right to keep a pole balanced upright"
+              caption="CartPole."
+            />
+            <PostClip
+              src={lunarClip}
+              alt="A lander firing its engines to touch down gently between two flags"
+              caption="Lunar Lander."
+            />
+          </div>
+          <PostClip
+            src={carClip}
+            alt="A race car driving smoothly around the curves of a track, seen from above"
+            caption="Car Racing."
+          />
+          <h3>Custom</h3>
+          <div className="post-clips">
+            <PostClip
+              src={flappyClip}
+              alt="A bird flapping through a series of gaps between pipes"
+              caption="Flappy Bird environment used in early testing."
+            />
+            <PostClip
+              src={soccerClip}
+              alt="Two teams of agents pushing a ball around a field toward each other's goals"
+              caption="Soccer 2v2 trained with IPPO."
+            />
+          </div>
+          <PostClip
+            src={platformerClip}
+            alt="A small square jumping across platforms through a series of levels"
+            caption="Custom platformer with pixel-based observations."
+          />
         </>
       ),
     },

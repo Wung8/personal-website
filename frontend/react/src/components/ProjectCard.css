@@ -20,6 +20,7 @@
 
 /* Fixed aspect ratio keeps every card the same height regardless of image size. */
 .project-card__media {
+  position: relative; /* the Blog badge is positioned against the image */
   aspect-ratio: 1.95;
   border: 2px solid var(--text-strong);
   background: var(--placeholder);
@@ -31,6 +32,41 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* Pills (WIP, Blog, GitHub) in the image's top-right corner, side by side.
+   Solid backgrounds so they stay readable on any screenshot. */
+.project-card__badges {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  gap: 6px;
+}
+
+.project-card__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 11px;
+  border: 1px solid var(--tag-border);
+  border-radius: 999px;
+  background: var(--card-bg);
+  box-shadow: 0 2px 6px rgba(20, 22, 31, 0.25);
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--tag-text);
+}
+
+/* Icon-only pill (GitHub): same height as the text pills, narrower sides. */
+.project-card__badge--icon {
+  padding: 2px 7px;
+}
+
+.project-card__badge--icon svg {
+  display: block;
+  /* match the text pills' line height so all pills are the same height */
+  margin: calc((0.85rem * 1.4 - 15px) / 2) 0;
 }
 
 .project-card__info {
