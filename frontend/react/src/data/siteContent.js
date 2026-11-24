@@ -101,6 +101,7 @@ export const projects = [
   },
   {
     title: 'RaidersAI',
+    slug: 'raiders',
     description: 'Browser-based game for experimenting with algorithmic decision-making AI.',
     year: 2026,
     image: '/images/projects/raidersai.png',

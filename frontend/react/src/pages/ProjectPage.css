@@ -251,6 +251,10 @@
   margin: 0 auto 24px;
 }
 
+.post__section .post-clip--wide {
+  max-width: none;
+}
+
 .post-clip video {
   display: block;
   width: 100%;
@@ -276,8 +280,32 @@
   margin: 0;
 }
 
+.post-clips--three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* Several clips/images sharing one caption (e.g. the Raiders gallery). */
+.post__section .post-group {
+  margin: 0 0 32px;
+}
+
+.post-group > .post-clips,
+.post-group > .post-clip {
+  margin-bottom: 12px;
+}
+
+.post-group > figcaption {
+  text-align: center;
+}
+
+/* A captioned group used as one cell of a .post-clips grid. */
+.post__section .post-clips > .post-group {
+  margin: 0;
+}
+
 @media (max-width: 600px) {
-  .post-clips {
+  .post-clips,
+  .post-clips--three {
     grid-template-columns: minmax(0, 1fr);
   }
 }
